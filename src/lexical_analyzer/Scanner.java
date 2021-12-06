@@ -34,5 +34,22 @@ public class Scanner {
         return tokens;
     }
 
+    /*
+     * @description: 词法分析
+     * @param: []
+     * @return: void
+     * @date: 18:05 2021/12/6
+     */
+    public void analyze() {
+        System.out.println("******词法分析******");
+        //为做简化，设标识符以空格分隔，仅判断标识符是否合法，不再对标识符进行分隔
+        String bufferString = buffer.toString();
+        String[] words = bufferString.split(" ");
+        for(String word: words) {
+            //判断是否为关键字、运算符、分界符、数字和变量
+            if (Type.isLegal(word)) tokens.add(word);
+        }
+        System.out.println("******词法分析******");
+    }
 
 }
