@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0fccb9e4-c9ed-4bde-b330-2082db6aeb10" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/lexical_analyzer/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/lexical_analyzer/Scanner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/lexical_analyzer/Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/lexical_analyzer/Type.java" afterDir="false" />
     </list>
@@ -22,7 +21,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utils/FileUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="722">
+            <state relative-caret-position="655">
               <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
             </state>
           </provider>
@@ -37,11 +36,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/lexical_analyzer/Scanner.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="51" column="47" selection-start-line="51" selection-start-column="47" selection-end-line="51" selection-end-column="47" />
+            <state relative-caret-position="418">
+              <caret line="54" column="33" selection-start-line="54" selection-start-column="33" selection-end-line="54" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -49,11 +48,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/lexical_analyzer/Type.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="29" column="37" lean-forward="true" selection-start-line="29" selection-start-column="36" selection-end-line="29" selection-end-column="37" />
+            <state relative-caret-position="38">
+              <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -78,8 +77,8 @@
       <list>
         <option value="$PROJECT_DIR$/src/utils/FileUtil.java" />
         <option value="$PROJECT_DIR$/src/Parser.java" />
-        <option value="$PROJECT_DIR$/src/lexical_analyzer/Type.java" />
         <option value="$PROJECT_DIR$/src/lexical_analyzer/Scanner.java" />
+        <option value="$PROJECT_DIR$/src/lexical_analyzer/Type.java" />
       </list>
     </option>
   </component>
@@ -92,11 +91,11 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-1448" />
-    <option name="y" value="-8" />
-    <option name="width" value="1456" />
-    <option name="height" value="916" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1098" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -168,18 +167,18 @@
       <option name="presentableId" value="Default" />
       <updated>1638621899724</updated>
       <workItem from="1638621901180" duration="5194000" />
-      <workItem from="1638783946232" duration="3659000" />
+      <workItem from="1638783946232" duration="5732000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8853000" />
+    <option name="totallyTimeSpent" value="10926000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1448" y="-8" width="1456" height="916" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25358167" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23726542" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -215,13 +214,6 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/lexical_analyzer.java" />
-    <entry file="file://$PROJECT_DIR$/src/utils/FileUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="722">
-          <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="38">
@@ -229,20 +221,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lexical_analyzer/Type.java">
+    <entry file="file://$PROJECT_DIR$/src/utils/FileUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="29" column="37" lean-forward="true" selection-start-line="29" selection-start-column="36" selection-end-line="29" selection-end-column="37" />
+        <state relative-caret-position="655">
+          <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lexical_analyzer/Scanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="54" column="33" selection-start-line="54" selection-start-column="33" selection-end-line="54" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lexical_analyzer/Scanner.java">
+    <entry file="file://$PROJECT_DIR$/src/lexical_analyzer/Type.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="51" column="47" selection-start-line="51" selection-start-column="47" selection-end-line="51" selection-end-column="47" />
+        <state relative-caret-position="38">
+          <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

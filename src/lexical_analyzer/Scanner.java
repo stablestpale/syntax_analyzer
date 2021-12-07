@@ -47,7 +47,13 @@ public class Scanner {
         String[] words = bufferString.split(" ");
         for(String word: words) {
             //判断是否为关键字、运算符、分界符、数字和变量
-            if (Type.isLegal(word)) tokens.add(word);
+            if (Type.isKeyword(word) || Type.isOperator(word) || Type.isDelimiter(word)) {
+                tokens.add(word);
+            } else if(Type.isInteger(word)) {
+                tokens.add("number");
+            } else if(Type.isVariable(word)) {
+                tokens.add("id");
+            }
         }
         System.out.println("******词法分析******");
     }

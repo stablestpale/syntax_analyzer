@@ -20,30 +20,6 @@ class Type {
     private static final String[] delimiter = {"(", ")", "{", "}", ";"};
 
     /*
-     * @description:  判断是否为关键字、运算符、分界符、数字和变量
-     * @param: [word]
-     * @return: boolean
-     * @date: 18:46 2021/12/6
-     */
-    static boolean isLegal(String word) {
-        if (Type.isKeyword(word)) {
-            System.out.printf("%-10s 关键字", word);
-        } else if (Type.isOperator(word)) {
-            System.out.printf("%-10s 运算符", word);
-        } else if (Type.isDelimiter(word)) {
-            System.out.printf("%-10s 分界符", word);
-        } else if (Type.isInteger(word)) {
-            System.out.printf("%-10s   数字", word);
-        } else if (Type.isVariable(word)) {
-            System.out.printf("%-10s   变量", word);
-        } else {
-            System.out.printf("%-10s  ERROR", word);
-            return false;
-        }
-        return true;
-    }
-
-    /*
      * @description: 判断是否为关键字
      * @param: [word]
      * @return: boolean
