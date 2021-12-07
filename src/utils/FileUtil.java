@@ -24,7 +24,7 @@ public class FileUtil {
         try {
             reader = new BufferedReader(new FileReader(path));
             buffer = new StringBuffer();
-            File file = new File("output.txt");
+            File file = new File("src/output.txt");
             if(!file.exists()) {
                 file.createNewFile();
             }

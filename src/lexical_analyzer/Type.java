@@ -2,6 +2,7 @@ package lexical_analyzer;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -18,6 +19,33 @@ class Type {
             "int", "double", "float", "char", "long"};
     private static final String[] operator = {"=", "+", "-", "*", "/", "<<", ">>"};
     private static final String[] delimiter = {"(", ")", "{", "}", ";"};
+
+    /*
+     * @description:  判断是否为关键字、运算符、分界符、数字和变量
+     * @param: [word]
+     * @return: boolean
+     * @date: 18:46 2021/12/6
+     */
+    static void isLegal(String word, List<String> tokens) {
+        if (Type.isKeyword(word)) {
+            System.out.printf("%-13s 关键字\n", word);
+            tokens.add(word);
+        } else if (Type.isOperator(word)) {
+            System.out.printf("%-13s 运算符\n", word);
+            tokens.add(word);
+        } else if (Type.isDelimiter(word)) {
+            System.out.printf("%-13s 分界符\n", word);
+            tokens.add(word);
+        } else if (Type.isInteger(word)) {
+            System.out.printf("%-13s   数字\n", word);
+            tokens.add("number");
+        } else if (Type.isVariable(word)) {
+            System.out.printf("%-13s   变量\n", word);
+            tokens.add("id");
+        } else {
+            System.out.printf("%-13s  ERROR\n", word);
+        }
+    }
 
     /*
      * @description: 判断是否为关键字
