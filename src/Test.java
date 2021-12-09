@@ -1,5 +1,4 @@
 import lexical_analyzer.Scanner;
-import utils.FileUtil;
 
 /**
  * @author zzy
@@ -14,10 +13,8 @@ public class Test {
 
 
     public static void main(String[] args) {
-        FileUtil fileUtil = new FileUtil("src/1.txt");
-        Scanner scanner = new Scanner(fileUtil);
+        Scanner scanner = new Scanner("src/utils/1.txt");
         scanner.analyze();
         System.out.println("tokens:  " + scanner.getTokens());
-
     }
 }

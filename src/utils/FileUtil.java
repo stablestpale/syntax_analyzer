@@ -12,7 +12,7 @@ import java.io.*;
 public class FileUtil {
     private BufferedReader reader;
     private BufferedWriter writer;
-    private StringBuffer buffer;
+    private String split;
 
     /*
      * @description: 初始化工具类
@@ -20,15 +20,15 @@ public class FileUtil {
      * @return: null
      * @date: 20:54 2021/12/4
      */
-    public FileUtil(String path) {
+    public FileUtil(String path, String split) {
         try {
-            reader = new BufferedReader(new FileReader(path));
-            buffer = new StringBuffer();
-            File file = new File("src/output.txt");
+            this.split = split;
+            this.reader = new BufferedReader(new FileReader(path));
+            File file = new File("output.txt");
             if(!file.exists()) {
                 file.createNewFile();
             }
-            writer = new BufferedWriter(new FileWriter(file));
+            this.writer = new BufferedWriter(new FileWriter(file));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,19 +37,20 @@ public class FileUtil {
     /*
      * @description: 读入文件到缓冲区
      * @param: []
-     * @return: StringBuffer
+     * @return: String
      * @date: 20:56 2021/12/4
      */
-    public StringBuffer read() {
+    public String read() {
         String current = "";
+        String total = "";
         try {
             while((current = reader.readLine()) != null) {
-                buffer.append(current);
+                total += current + split;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return buffer;
+        return total;
     }
 
     /*
