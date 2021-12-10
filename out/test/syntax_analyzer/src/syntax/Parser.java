@@ -21,6 +21,7 @@ public class Parser {
     private List<Closure> closures;
     private Grammar grammar;
     private List<GoTo> goToList;
+    private Map<Integer, Map<String, Integer>> table;
 
     public Parser(String filePath) {
         this.fileUtil = new FileUtil(filePath, "|");
@@ -41,6 +42,7 @@ public class Parser {
         getFirst();
         getFollow();
         getClosure();
+        getSLRTable();
         System.out.println("******语法分析******");
         fileUtil.write("******语法分析******");
     }
@@ -234,9 +236,46 @@ public class Parser {
         outputGoTo();
     }
 
+    /*
+     * @description: 生成SLR分析表
+     * @param: []
+     * @return: void
+     * @date: 1:52 2021/12/11
+     */
+    private void getSLRTable() {
+        table = new HashMap<>();
+        for(GoTo goTo: goToList) {
+            Map<String, Integer> current = table.getOrDefault(goTo.getStartIndex(), new HashMap<>());
+            current.put(goTo.getToken(), goTo.getEndIndex());
+            table.put(goTo.getStartIndex(), current);
+        }
+        for(int i = 0; i < closures.size(); ++i) {
+            Closure closure = closures.get(i);
+            List<Production> origin = closure.originProductions;
+            for(Production production: origin) {
+                if(production.getRight().length != production.getPosition()) continue;
+                // follow集符合即可规约
+                Set<String> follow = follows.get(production.getLeft());
+                for(String string: follow) {
+                    if("S".equals(production.getLeft())) {
+                        Map<String, Integer> current = table.getOrDefault(i, new HashMap<>());
+                        current.put(string, Integer.MIN_VALUE); // 使用最小值代替acc
+                        table.put(i, current);
+                    } else {
+                        Map<String, Integer> current = table.getOrDefault(i, new HashMap<>());
+                        // 使用负值记录r
+                        current.put(string, -production.getPosition());
+                        table.put(i, current);
+                    }
+                }
+            }
+        }
+        outputTable();
+    }
+
     private void outputClosure() {
         // 输出闭包
-        System.out.println("\n TABLE:");
+        System.out.println("\n GRAPH:");
         for(int i = 0; i < closures.size(); ++i) {
             System.out.println("  I" + i + ":");
             Closure closure = closures.get(i);
@@ -261,4 +300,40 @@ public class Parser {
         }
     }
 
+    private void outputTable() {
+        // 输出SLR分析表
+        System.out.println("\n TABLE:");
+        System.out.println("state                       actions & goto");
+        System.out.print("    #    ");
+        for(String terminal: terminals) {
+            System.out.printf("%-5s", terminal);
+        }
+        for(String nonTerminal: nonTerminals) {
+            System.out.printf("%-5s", nonTerminal);
+        }
+        System.out.println();
+        for(int state = 0; state < closures.size(); ++state) {
+            Map<String, Integer> map = table.getOrDefault(state, new HashMap<>());
+            System.out.printf("%-2d  ", state);
+            if(map.containsKey("#")) {
+                if(map.get("#") == Integer.MIN_VALUE) System.out.print("acc  ");
+                else if(map.get("#") > 0) System.out.printf("s%-4d", map.get("#"));
+                else System.out.printf("r%-4d", -map.get("#"));
+            } else System.out.print("-    ");
+            for(String string: terminals) {
+                if(map.containsKey(string)) {
+                    if(map.get(string) > 0) System.out.printf("s%-4d", map.get(string));
+                    else System.out.printf("r%-4d", -map.get(string));
+                } else System.out.print("-    ");
+            }
+            for(String string: nonTerminals) {
+                if(map.containsKey(string))  System.out.printf("%-5d", map.get(string));
+                else System.out.print("-    ");
+            }
+            System.out.println();
+        }
+
+
+
+    }
 }

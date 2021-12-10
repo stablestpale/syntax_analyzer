@@ -44,7 +44,7 @@ class Closure {
         Production production = new Production(left, right, position);
         originProductions.add(production);
         // 如果当前产生式为最后一个产生式，则直接返回，否则等待扩充
-        if(position >= right.length - 1) return;
+        if(position > right.length - 1) return;
         String current = right[position];
         List<Production> currents = gotoMap.getOrDefault(current, new ArrayList<>());
         currents.add(production);

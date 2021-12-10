@@ -24,4 +24,16 @@ class GoTo {
                 " to " + endIndex +
                 ",  " + token;
     }
+
+    public Integer getStartIndex() {
+        return startIndex;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public Integer getEndIndex() {
+        return endIndex;
+    }
 }
