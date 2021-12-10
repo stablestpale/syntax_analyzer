@@ -1,4 +1,4 @@
-package lexical_analyzer;
+package lexical;
 
 import java.util.Arrays;
 import java.util.HashSet;

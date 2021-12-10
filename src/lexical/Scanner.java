@@ -1,9 +1,8 @@
-package lexical_analyzer;
+package lexical;
 
 import utils.FileUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

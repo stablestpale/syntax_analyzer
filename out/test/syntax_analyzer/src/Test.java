@@ -1,4 +1,5 @@
-import lexical_analyzer.Scanner;
+import lexical.Scanner;
+import syntax.Parser;
 
 /**
  * @author zzy

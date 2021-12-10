@@ -1,6 +1,7 @@
+package syntax;
+
 import utils.FileUtil;
 
-import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -10,29 +11,38 @@ import java.util.*;
  */
 
 
-class Parser {
+public class Parser {
     private FileUtil fileUtil;
     private Set<String> terminals;
     private Set<String> nonTerminals;
     private Map<String, Set<String>> firsts;
     private Map<String, Set<String>> follows;
     private List<Production> productions;
+    private List<Closure> closures;
+    private Grammar grammar;
+    private List<GoTo> goToList;
 
-    Parser(String filePath) {
+    public Parser(String filePath) {
         this.fileUtil = new FileUtil(filePath, "|");
         this.productions = new ArrayList<>();
         this.terminals = new HashSet<>();
         this.nonTerminals = new HashSet<>();
         this.firsts = new HashMap<>();
         this.follows = new HashMap<>();
+        this.closures = new ArrayList<>();
+        this.grammar = new Grammar(terminals, nonTerminals, firsts, follows, productions);
+        this.goToList = new ArrayList<>();
     }
 
-    void analyze() {
+    public void analyze() {
         System.out.println("\n\n******语法分析******");
+        fileUtil.write("\n\n******语法分析******");
         readProductions();
         getFirst();
         getFollow();
+        getClosure();
         System.out.println("******语法分析******");
+        fileUtil.write("******语法分析******");
     }
 
     /*
@@ -55,6 +65,8 @@ class Parser {
         //System.out.println(productions.toString());
         System.out.println("终结符：  " + terminals.toString());
         System.out.println("非终结符: " + nonTerminals.toString());
+        fileUtil.write("终结符：  " + terminals.toString());
+        fileUtil.write("非终结符: " + nonTerminals.toString());
     }
 
     /*
@@ -91,10 +103,14 @@ class Parser {
             }
         }
         System.out.println("First集:");
+        fileUtil.write("First集:");
         Set<Map.Entry<String, Set<String>>> entries = firsts.entrySet();
         for (Map.Entry entry: entries) {
             // 不展示终结符的first集
-            if(nonTerminals.contains(entry.getKey().toString())) System.out.println("   " + entry.getKey() + ":  " + entry.getValue().toString());
+            if(nonTerminals.contains(entry.getKey().toString())) {
+                System.out.println("   " + entry.getKey() + ":  " + entry.getValue().toString());
+                fileUtil.write("   " + entry.getKey() + ":  " + entry.getValue().toString());
+            }
         }
     }
 
@@ -156,10 +172,92 @@ class Parser {
             }
         }
         System.out.println("Follow集:");
+        fileUtil.write("Follow集:");
         Set<Map.Entry<String, Set<String>>> entries = follows.entrySet();
         for (Map.Entry entry: entries) {
             // 不展示终结符的first集
-            if(nonTerminals.contains(entry.getKey().toString())) System.out.println("   " + entry.getKey() + ":  " + entry.getValue().toString());
+            if(nonTerminals.contains(entry.getKey().toString())) {
+                System.out.println("   " + entry.getKey() + ":  " + entry.getValue().toString());
+                fileUtil.write("   " + entry.getKey() + ":  " + entry.getValue().toString());
+            }
+        }
+    }
+
+    /*
+     * @description: 生成状态转换闭包
+     * @param: []
+     * @return: void
+     * @date: 21:20 2021/12/10
+     */
+    private void getClosure() {
+        // 记录闭包存在状态
+        Map<Closure, Integer> state = new HashMap<>();
+        Closure firstClosure = new Closure(grammar);
+        // 将开始符号产生式I0加入到closure中
+        firstClosure.insert(productions.get(0).getLeft(), productions.get(0).getRight(), 0);
+        firstClosure.expand();
+        closures.add(firstClosure);
+        state.put(firstClosure, 0);
+        // 使用当前闭包计算剩余闭包
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(0);
+        while(!queue.isEmpty()) {
+            int index = queue.poll();
+            // 待拓展闭包
+            Closure oldClosure = closures.get(index);
+            // 若当前闭包没有可以扩展的表达式，则继续
+            if(oldClosure.gotoMap.isEmpty()) continue;
+            Set<Map.Entry<String, List<Production>>> entries = oldClosure.gotoMap.entrySet();
+            for(Map.Entry entry: entries) {
+                String key = entry.getKey().toString();
+                if("e".equals(key)) continue; // 若当前key为e，则跳过
+                List<Production> values = oldClosure.gotoMap.get(key);
+                Closure newClosure = new Closure(grammar);
+                for(Production production: values) {
+                    newClosure.insert(production.getLeft(), production.getRight(), production.getPosition() + 1);
+                }
+                //检查当前状态是否已存在
+                if(state.containsKey(newClosure)) {
+                    // 如果已存在当前状态，则更新边
+                    goToList.add(new GoTo(index, key, state.get(newClosure)));
+                } else {
+                    newClosure.expand();
+                    closures.add(newClosure);
+                    int newIndex = closures.size() - 1;
+                    queue.add(newIndex);
+                    state.put(newClosure, newIndex);
+                    goToList.add(new GoTo(index, key, newIndex));
+                }
+            }
+        }
+        outputClosure();
+        outputGoTo();
+    }
+
+    private void outputClosure() {
+        // 输出闭包
+        System.out.println("\n TABLE:");
+        for(int i = 0; i < closures.size(); ++i) {
+            System.out.println("  I" + i + ":");
+            Closure closure = closures.get(i);
+            for(Production production: closure.allProductions) {
+                System.out.print(production.getLeft() + " -> ");
+                for(int j = 0; j < production.getRight().length; ++j) {
+                    if(j == production.position) System.out.print(".");
+                    System.out.print(production.getRight()[j] + " ");
+                }
+                if(production.getPosition() == production.getRight().length) System.out.print(".");
+                System.out.println("");
+            }
+            System.out.println("");
+        }
+    }
+
+    private void outputGoTo() {
+        // 输出闭包间的边
+        System.out.println("\n EDGES:");
+        for(GoTo goTo: goToList) {
+            System.out.println(goTo.toString());
         }
     }
 

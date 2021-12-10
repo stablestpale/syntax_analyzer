@@ -62,6 +62,7 @@ public class FileUtil {
     public void write(String current) {
         try {
             writer.write(current);
+            writer.write("\r\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
