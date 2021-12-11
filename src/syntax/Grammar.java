@@ -1,5 +1,6 @@
 package syntax;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,13 +18,15 @@ class Grammar {
     private Map<String, Set<String>> firsts;
     private Map<String, Set<String>> follows;
     private List<Production> productions;
+    Set<Production> usedProduction;  // 用于计算闭包时判重
 
-    public Grammar(Set<String> terminals, Set<String> nonTerminals, Map<String, Set<String>> firsts, Map<String, Set<String>> follows, List<Production> productions) {
+    Grammar(Set<String> terminals, Set<String> nonTerminals, Map<String, Set<String>> firsts, Map<String, Set<String>> follows, List<Production> productions) {
         this.terminals = terminals;
         this.nonTerminals = nonTerminals;
         this.firsts = firsts;
         this.follows = follows;
         this.productions = productions;
+        this.usedProduction = new HashSet<>();
     }
 
     public Set<String> getTerminals() {

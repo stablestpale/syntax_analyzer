@@ -1,7 +1,20 @@
-S -> E
+S -> A
+A -> M
+A -> O
+M -> if ( C ) then M else M
+M -> B
+O -> if ( C ) then S
+O -> if ( C ) then M else O
+B -> id = E ;
+C -> E > E
+C -> E < E
+C -> E == E
 E -> E + T
+E -> E ¨C T
 E -> T
-T -> T * F
 T -> F
+T -> T * F
+T -> T / F
 F -> ( E )
 F -> id
+F -> number

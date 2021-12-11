@@ -1,5 +1,6 @@
 package syntax;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,21 +43,22 @@ public class Production {
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Production){
-            return ((Production) obj).left.equals(left) && ((Production) obj).position == position && ((Production) obj).right.equals(right);
+            return ((Production) obj).left.equals(left) && ((Production) obj).position == position && Arrays.deepEquals(((Production) obj).right, right);
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return left.hashCode() + right.hashCode() + position;
+        return left.hashCode() + Arrays.hashCode(right) + position;
     }
 
     @Override
     public String toString() {
-        return "syntax.Production{" +
+        return "Production{" +
                 "left='" + left + '\'' +
                 ", right=" + Arrays.toString(right) +
+                ", position=" + position +
                 '}';
     }
 }

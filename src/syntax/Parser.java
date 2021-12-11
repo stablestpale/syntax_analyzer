@@ -22,8 +22,9 @@ public class Parser {
     private Grammar grammar;
     private List<GoTo> goToList;
     private Map<Integer, Map<String, Integer>> table;
+    private List<String> tokens;
 
-    public Parser(String filePath) {
+    public Parser(String filePath, List<String> tokens) {
         this.fileUtil = new FileUtil(filePath, "|");
         this.productions = new ArrayList<>();
         this.terminals = new HashSet<>();
@@ -33,6 +34,7 @@ public class Parser {
         this.closures = new ArrayList<>();
         this.grammar = new Grammar(terminals, nonTerminals, firsts, follows, productions);
         this.goToList = new ArrayList<>();
+        this.tokens = tokens;
     }
 
     public void analyze() {
@@ -43,6 +45,7 @@ public class Parser {
         getFollow();
         getClosure();
         getSLRTable();
+        parse();
         System.out.println("******语法分析******");
         fileUtil.write("******语法分析******");
     }
@@ -195,11 +198,13 @@ public class Parser {
         // 记录闭包存在状态
         Map<Closure, Integer> state = new HashMap<>();
         Closure firstClosure = new Closure(grammar);
+        Map<Production, Integer> originSet = new HashMap();
         // 将开始符号产生式I0加入到closure中
         firstClosure.insert(productions.get(0).getLeft(), productions.get(0).getRight(), 0);
         firstClosure.expand();
         closures.add(firstClosure);
         state.put(firstClosure, 0);
+
         // 使用当前闭包计算剩余闭包
         Queue<Integer> queue = new LinkedList<>();
         queue.add(0);
@@ -216,13 +221,19 @@ public class Parser {
                 List<Production> values = oldClosure.gotoMap.get(key);
                 Closure newClosure = new Closure(grammar);
                 for(Production production: values) {
+                    Production newProduction = new Production(production.getLeft(), production.getRight(), production.getPosition() + 1);
                     newClosure.insert(production.getLeft(), production.getRight(), production.getPosition() + 1);
+/*                    if(!originSet.containsKey(newProduction)) {
+                        originSet.put(newProduction, production.getPosition() + 1);
+                    } else {
+                        goToList.add(new GoTo(index, key, closures.size() - 1));
+                    }*/
                 }
                 //检查当前状态是否已存在
                 if(state.containsKey(newClosure)) {
                     // 如果已存在当前状态，则更新边
-                    goToList.add(new GoTo(index, key, state.get(newClosure)));
-                } else {
+                     goToList.add(new GoTo(index, key, state.get(newClosure)));
+                } else if(newClosure.originProductions.size() != 0){
                     newClosure.expand();
                     closures.add(newClosure);
                     int newIndex = closures.size() - 1;
@@ -263,14 +274,71 @@ public class Parser {
                         table.put(i, current);
                     } else {
                         Map<String, Integer> current = table.getOrDefault(i, new HashMap<>());
-                        // 使用负值记录r
-                        current.put(string, -production.getPosition());
+                        // 使用负值记录待规约表达式
+                        for(int j = 0; j < productions.size(); ++j) {
+                            Production inputProduction = productions.get(j);
+                            if(!inputProduction.getLeft().equals(production.getLeft()) || !Arrays.deepEquals(inputProduction.getRight(), production.getRight())) continue;
+                            current.put(string, -j);
+                            break;
+                        }
                         table.put(i, current);
                     }
                 }
             }
         }
         outputTable();
+    }
+
+    /*
+     * @description: 进行语法分析
+     * @param: []
+     * @return: void
+     * @date: 3:06 2021/12/11
+     */
+    private void parse() {
+        System.out.println("\n");
+        Deque<Integer> stack = new LinkedList<>();
+        Deque<String> input = new LinkedList<>();
+        int index = 0;
+        stack.push(0);
+        input.push("#");
+        tokens.add("#");
+        System.out.println("tokens:" + tokens);
+        while(true) {
+            Integer s = stack.peek();
+            if(!table.containsKey(s) || !table.getOrDefault(s, new HashMap<>()).containsKey(tokens.get(index))) {
+                System.out.println(s + " " + tokens.get(index) + " " + table.containsKey(s) + " " + table.getOrDefault(s, new HashMap<>()).containsKey(tokens.get(index)) + " ERROR");
+                return;
+            }
+            Integer next = table.get(s).get(tokens.get(index));
+            // 判别结束
+            if(next == Integer.MIN_VALUE) {
+                System.out.println("success!");
+                return;
+            } else if(next < 0) {
+                // 此时按照第next个表达式进行归约
+                next = -next;
+                Production production = productions.get(next);
+                String[] right = production.getRight();
+                for(int i = right.length - 1; i >= 0; --i) {
+                    if(!input.peek().equals(right[i])) {
+                        System.out.printf("ERROR");
+                        return;
+                    }
+                    input.pop();
+                    stack.pop();
+                }
+                // 将A和goto[栈顶， A]压入栈中
+                input.push(production.getLeft());
+                stack.push(table.get(stack.peek()).get(production.getLeft()));
+                System.out.println("规约后: " + stack.toString() + "  " + input.toString());
+            } else {
+                stack.push(next);
+                input.push(tokens.get(index));
+                ++index;
+                System.out.println("移进后: " + stack.toString() + "  " + input.toString());
+            }
+        }
     }
 
     private void outputClosure() {
@@ -332,8 +400,5 @@ public class Parser {
             }
             System.out.println();
         }
-
-
-
     }
 }
