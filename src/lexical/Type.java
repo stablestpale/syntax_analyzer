@@ -17,7 +17,7 @@ class Type {
     private static final String[] keyword = {"main", "return",
             "for", "while", "do", "cin", "cout", "if", "then", "else",
             "int", "double", "float", "char", "long"};
-    private static final String[] operator = {"=", "+", "-", "*", "/", "<<", ">>", "==", ">", "<"};
+    private static final String[] operator = {"=", "+", "-", "*", "/", "<<", ">>", "==", ">", "<", ">=", "&&"};
     private static final String[] delimiter = {"(", ")", "{", "}", ";"};
 
     /*
