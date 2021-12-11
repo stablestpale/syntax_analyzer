@@ -100,27 +100,6 @@ class Closure {
                 List<Production> currents = gotoMap.getOrDefault(rights[0], new ArrayList<>());
                 currents.add(current);
                 gotoMap.put(rights[0], currents);
-
-/*                for(int i = 0; i < rights.length; ++i) {
-                    Production current = new Production(pre, rights, i);
-                    // 如果当前为非终结符且没有扩展过
-                    if(grammar.getNonTerminals().contains(rights[i]) && !usedPre.contains(rights[i])) {
-                        queue.add(rights[i]);
-                        usedPre.add(rights[i]);
-                    }
-                    if(productionSet.contains(production)) continue;
-                    productionSet.add(production);
-                    allProductions.add(production);
-                    grammar.usedProduction.add(current);
-*//*                    if(!productionSet.contains(production)&&!grammar.usedProduction.contains(production)) {
-                        productionSet.add(production);
-                        allProductions.add(production);
-                        grammar.usedProduction.add(current);
-                    }*//*
-                    List<Production> currents = gotoMap.getOrDefault(rights[i], new ArrayList<>());
-                    currents.add(current);
-                    gotoMap.put(rights[i], currents);
-                }*/
             }
         }
         System.out.println(originProductions.toString() + " " + usedPre.toString() + "\n");

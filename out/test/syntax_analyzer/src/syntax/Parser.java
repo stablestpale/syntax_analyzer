@@ -223,11 +223,6 @@ public class Parser {
                 for(Production production: values) {
                     Production newProduction = new Production(production.getLeft(), production.getRight(), production.getPosition() + 1);
                     newClosure.insert(production.getLeft(), production.getRight(), production.getPosition() + 1);
-/*                    if(!originSet.containsKey(newProduction)) {
-                        originSet.put(newProduction, production.getPosition() + 1);
-                    } else {
-                        goToList.add(new GoTo(index, key, closures.size() - 1));
-                    }*/
                 }
                 //检查当前状态是否已存在
                 if(state.containsKey(newClosure)) {

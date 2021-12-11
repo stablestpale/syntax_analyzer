@@ -11,6 +11,7 @@ type -> void
 type -> unsigned type
 func_body -> ;
 func_body -> block
+block -> { define_stmts }
 block -> { define_stmts stmts }
 define_stmts -> type id init ;
 init -> = number
@@ -28,7 +29,7 @@ jump_stmt -> break
 jump_stmt -> return isnull_expr
 iteration_stmt -> while ( logical_expression ) block_stmt
 iteration_stmt -> for ( isnull_expr ; isnull_expr ; isnull_expr ) block_stmt
-iteration_stmt -> do block_stmt while ( logical_expression ) ;
+iteration_stmt -> do block_stmt while ( expression ) ;
 branch_stmt -> if ( logical_expression ) block_stmt else block_stmt
 logical_expression -> ! expression bool_expression
 logical_expression -> expression bool_expression
