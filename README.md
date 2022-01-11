@@ -1,6 +1,5 @@
 # syntax_analyzer
 
-> 如果是hitwher，不客气  
 
 本代码包含词法分析与SLR语法分析。使用知道：
 
